@@ -3,6 +3,7 @@ package com.daimajia.swipe;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -1656,13 +1657,20 @@ public class SwipeLayout extends FrameLayout {
         safeBottomView();
     }
 
-    public void setOffset(int offset) {
-        setCurrentDragEdge(offset <= 0 ? DragEdge.Right : DragEdge.Left);
-        mEdgeSwipesOffset[mCurrentDragEdge.ordinal()] = Math.abs(offset);
-        String name = ((TextView) ((LinearLayout) getChildAt(1)).getChildAt(1)).getText().toString().split(" ")[0];
-        ((TextView) ((LinearLayout) getChildAt(1)).getChildAt(1)).setText(name + " " + String.valueOf(offset) + " (" + mCurrentDragEdge.name() + ")");
-//        mDragHelper.smoothSlideViewTo(this, offset, 0);
-        
-
+    @SuppressWarnings("ResourceType")
+    public void setOffset(int left, int top) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            View surface = getSurfaceView();
+            if (surface == null) {
+                return;
+            }
+            int width = surface.getWidth();
+            int height = surface.getHeight();
+            int leftOffset = left > width ? width : left < -width ? -width : left;
+            int topOffset = top > height ? height : top < -height ? -height : top;
+            surface.setLeft(leftOffset);
+            surface.setTop(topOffset);
+            safeBottomView();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.daimajia.swipedemo.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapter.SimpleViewHolder> {
 
+    private static int count= 0;
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
         SwipeLayout swipeLayout;
         TextView textViewPos;
@@ -68,18 +70,28 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
         String item = mDataset.get(position);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            ViewGroup.MarginLayoutParams params = ((ViewGroup.MarginLayoutParams)viewHolder.swipeLayout.getLayoutParams());
+            params.setMarginStart(count * 200);
+            count++;
+            viewHolder.swipeLayout.setLayoutParams(params);
+        }
         viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         viewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onOpen(SwipeLayout layout) {
-                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+                YoYo.with(Techniques.Tada).duration(1500).delay(100).playOn(layout.findViewById(R.id.trash));
+                for (SwipeLayout swipeLayout : mSwipeLayouts) {
+                    if (swipeLayout.equals(layout)) continue;
+                    swipeLayout.setOffset(-layout.getWidth(), 0);
+                }
             }
 
             @Override
             public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
                 for (SwipeLayout swipeLayout : mSwipeLayouts) {
                     if (swipeLayout.equals(layout)) continue;
-                    swipeLayout.setOffset(leftOffset);
+                    swipeLayout.setOffset(leftOffset, topOffset);
                 }
                 super.onUpdate(layout, leftOffset, topOffset);
             }
