@@ -417,6 +417,9 @@ public class SwipeLayout extends FrameLayout {
                 rect = new Rect();
                 mViewBoundCache.put(child, rect);
             }
+            if (child == null) {
+                continue;
+            }
             rect.left = child.getLeft();
             rect.top = child.getTop();
             rect.right = child.getRight();
@@ -1324,7 +1327,7 @@ public class SwipeLayout extends FrameLayout {
         if (currentDragEdge == null || surfaceView == null) {
             return;
         }
-        float willOpenPercent = (isCloseBeforeDragged ? mWillOpenPercentAfterClose : mWillOpenPercentAfterOpen););
+        float willOpenPercent = (isCloseBeforeDragged ? mWillOpenPercentAfterClose : mWillOpenPercentAfterOpen);
         if (currentDragEdge == DragEdge.Left) {
             if (xvel > minVelocity) open();
             else if (xvel < -minVelocity) close();
