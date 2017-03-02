@@ -18,6 +18,7 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.daimajia.swipedemo.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapter.SimpleViewHolder> {
 
@@ -46,18 +47,22 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
 
     private Context mContext;
     private ArrayList<String> mDataset;
+    private List<SwipeLayout> mSwipeLayouts;
 
     //protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     public RecyclerViewAdapter(Context context, ArrayList<String> objects) {
         this.mContext = context;
         this.mDataset = objects;
+        this.mSwipeLayouts = new ArrayList<>();
     }
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
-        return new SimpleViewHolder(view);
+        SimpleViewHolder holder = new SimpleViewHolder(view);
+        mSwipeLayouts.add(holder.swipeLayout);
+        return holder;
     }
 
     @Override
@@ -68,6 +73,15 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
             @Override
             public void onOpen(SwipeLayout layout) {
                 YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                for (SwipeLayout swipeLayout : mSwipeLayouts) {
+                    if (swipeLayout.equals(layout)) continue;
+                    swipeLayout.setOffset(leftOffset);
+                }
+                super.onUpdate(layout, leftOffset, topOffset);
             }
         });
         viewHolder.swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {

@@ -19,6 +19,8 @@ import android.view.ViewParent;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -1652,5 +1654,15 @@ public class SwipeLayout extends FrameLayout {
         }
 
         safeBottomView();
+    }
+
+    public void setOffset(int offset) {
+        setCurrentDragEdge(offset <= 0 ? DragEdge.Right : DragEdge.Left);
+        mEdgeSwipesOffset[mCurrentDragEdge.ordinal()] = Math.abs(offset);
+        String name = ((TextView) ((LinearLayout) getChildAt(1)).getChildAt(1)).getText().toString().split(" ")[0];
+        ((TextView) ((LinearLayout) getChildAt(1)).getChildAt(1)).setText(name + " " + String.valueOf(offset) + " (" + mCurrentDragEdge.name() + ")");
+//        mDragHelper.smoothSlideViewTo(this, offset, 0);
+        
+
     }
 }
