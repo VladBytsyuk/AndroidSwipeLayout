@@ -20,8 +20,6 @@ import android.view.ViewParent;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -1658,18 +1656,34 @@ public class SwipeLayout extends FrameLayout {
     }
 
     @SuppressWarnings("ResourceType")
+    public void setLeftOffset(int left) {
+        setOffset(left, 0);
+    }
+
+    @SuppressWarnings("ResourceType")
+    public void setTopOffset(int top) {
+        setOffset(0, top);
+    }
+
+    @SuppressWarnings("ResourceType")
     public void setOffset(int left, int top) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             View surface = getSurfaceView();
             if (surface == null) {
                 return;
             }
-            int width = surface.getWidth();
-            int height = surface.getHeight();
+
+            int width = getWidth();
+            int height = getHeight();
+
             int leftOffset = left > width ? width : left < -width ? -width : left;
             int topOffset = top > height ? height : top < -height ? -height : top;
+
             surface.setLeft(leftOffset);
             surface.setTop(topOffset);
+            surface.setRight(width + leftOffset);
+            surface.setBottom(height + topOffset);
+
             safeBottomView();
         }
     }
