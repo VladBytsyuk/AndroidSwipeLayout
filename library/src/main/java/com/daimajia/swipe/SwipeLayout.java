@@ -1657,16 +1657,6 @@ public class SwipeLayout extends FrameLayout {
 
     @SuppressWarnings("ResourceType")
     public void setLeftOffset(int left) {
-        setOffset(left, 0);
-    }
-
-    @SuppressWarnings("ResourceType")
-    public void setTopOffset(int top) {
-        setOffset(0, top);
-    }
-
-    @SuppressWarnings("ResourceType")
-    public void setOffset(int left, int top) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             View surface = getSurfaceView();
             if (surface == null) {
@@ -1674,15 +1664,21 @@ public class SwipeLayout extends FrameLayout {
             }
 
             int width = getWidth();
-            int height = getHeight();
-
             int leftOffset = left > width ? width : left < -width ? -width : left;
-            int topOffset = top > height ? height : top < -height ? -height : top;
 
             surface.setLeft(leftOffset);
-            surface.setTop(topOffset);
             surface.setRight(width + leftOffset);
-            surface.setBottom(height + topOffset);
+
+            View bottom = getCurrentBottomView();
+            if (bottom != null && getShowMode() == ShowMode.PullOut) {
+                if (left < 0) {
+                    bottom.setLeft(width + leftOffset);
+                    bottom.setRight(2 * width + leftOffset);
+                } else {
+                    bottom.setLeft(-width + leftOffset);
+                    bottom.setRight(leftOffset);
+                }
+            }
 
             safeBottomView();
         }
