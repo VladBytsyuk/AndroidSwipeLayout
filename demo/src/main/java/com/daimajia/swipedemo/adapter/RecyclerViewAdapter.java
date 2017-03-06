@@ -70,12 +70,6 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
         String item = mDataset.get(position);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            ViewGroup.MarginLayoutParams params = ((ViewGroup.MarginLayoutParams)viewHolder.swipeLayout.getLayoutParams());
-            params.setMarginStart(count * 200);
-            count++;
-            viewHolder.swipeLayout.setLayoutParams(params);
-        }
         viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         viewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
