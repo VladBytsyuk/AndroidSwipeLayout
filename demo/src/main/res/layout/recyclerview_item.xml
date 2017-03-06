@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="#F0544c"
+            android:background="#FF5534"
             android:gravity="center"
             android:tag="Bottom3"
             android:weightSum="10">
@@ -46,18 +46,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/item_selector"
             android:elevation="5dp"
             android:padding="10dp">
 
             <TextView
                 android:id="@+id/position"
-                android:text="i) "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/text_data"
-                android:text="Data"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:tag="Hover"/>

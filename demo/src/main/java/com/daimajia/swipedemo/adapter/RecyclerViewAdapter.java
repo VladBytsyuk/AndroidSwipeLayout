@@ -83,7 +83,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
                 YoYo.with(Techniques.Tada).duration(1500).delay(100).playOn(layout.findViewById(R.id.trash));
                 for (SwipeLayout swipeLayout : mSwipeLayouts) {
                     if (swipeLayout.equals(layout)) continue;
-                    swipeLayout.setOffset(-layout.getWidth(), 0);
+                    swipeLayout.setLeftOffset(-layout.getWidth());
                 }
             }
 
@@ -91,7 +91,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
             public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
                 for (SwipeLayout swipeLayout : mSwipeLayouts) {
                     if (swipeLayout.equals(layout)) continue;
-                    swipeLayout.setOffset(leftOffset, topOffset);
+                    swipeLayout.setLeftOffset(leftOffset);
                 }
                 super.onUpdate(layout, leftOffset, topOffset);
             }
